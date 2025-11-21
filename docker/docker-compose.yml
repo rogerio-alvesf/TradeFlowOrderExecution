@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  rabbitmq:
+    image: rabbitmq:4.2.1-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    ports:
+      - "5672:5672"     # Porta para comunicação com aplicações .NET
+      - "15672:15672"   # Porta do dashboard de administração
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq/   # Persistência das mensagens / configs
+    networks:
+      - rabbit_net
+    restart: unless-stopped
+
+networks:
+  rabbit_net:
+    driver: bridge
+
+volumes:
+  rabbitmq_data:
